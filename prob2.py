@@ -9,24 +9,25 @@ import sys
 
 limit = 4000000
 def termGenerator():
-  terms = [i for i in range(1, limit) if i%2 == 0]
-  for i in terms:
-      if i < limit:
-          yield i
+    for i in range(1, limit):
+        yield i
 
 def fib(n):
-    return n if n in [0,1] else fib(n-1) + fib(n-2)
+    return n if n in [1, 2] else fib(n-1) + fib(n-2)
 
 sum = 0
 termGenObj = termGenerator()
 
 for n in termGenObj:
     fn = fib(n)
-    sum += fn
+
     if fn > limit:
         print("limit exceeded at %i" %fn)
         sys.exit()
     else:
+        if fn%2 == 0:
+            sum += fn
+
         print("term number is %i" %n)
         print("fibonacci sequence value is %i" %fn)
         print("sum is %i" %sum)
