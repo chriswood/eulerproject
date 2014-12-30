@@ -9,32 +9,48 @@
 #     is second prime?
 #         yes -> save, quit
 #      no -> repeat process with this number
+import math
+import itertools
 
-# number = 61
-# pfactors = []
-# if number % 2 == 0:
-#     pfactors.append(2)
-#     ptest(2, number/2)
-# elif number % 3
+def is_prime(N):
+    '''
+    Check a number N and see if it is divisible by anything less than
+    its square root evenly.
+    '''
+    # check quick values
+    if N in (1, 4):
+        return False
+    if N in (2, 3):
+        return True
 
-number = 1169
-pfactors = []
+    #get last value to test for even division into N
+    last_value = math.ceil(math.sqrt(N))
 
-def termGenerator(start):
-    # Already tested 2, so no need to test multiples of it
-    # TODO weed out multiples of 5 after a pretest
-    for i in range(start, number, 2):
-        yield i
+    for n in xrange(2, int(last_value) + 1):
+        if (N%n == 0):
+            return False
+    return True
 
+def find_multiple(start, end):
+    if((end - start) < 1):
+        return
 
-def findMultiple(start):
-    termGenObj = termGenerator(start)
-    for n in termGenObj:
-        if number % n == 0:
-            multiple = n
-            print("Found a multiple %i" %multiple)
-            if isPrime(multiple):
-                pfactors.append(multiple)
+    for n in itertools.count(start):
+        if n >= number:
+            break
+        elif number % n == 0: #true
+            factor1 = n #
+            factor2 = number/n #
+            print("factor1 %i" %factor1)
+            print("factor2 %i" %factor2)
+            if is_prime(factor1): #
+                pfactors.append(factor1)
             else:
-                start = n
-                findMultiple(n)
+                if(math.ceil(math.sqrt(number)) - factor1 < 1):
+                    break
+                find_multiple(factor1 + 1, factor2 - 1)
+
+number = 600851475143
+pfactors = []
+find_multiple(2, number)
+print(pfactors)
