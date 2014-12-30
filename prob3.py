@@ -2,13 +2,6 @@
 
 # What is the largest prime factor of the number 600851475143 ?
 
-# find 2 multiples.
-#     is first prime?
-#         yes -> save
-#         no -> repeat process with this number
-#     is second prime?
-#         yes -> save, quit
-#      no -> repeat process with this number
 import math
 import itertools
 
