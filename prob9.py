@@ -13,12 +13,22 @@ def is_pyth(sides):
     return hypot(sides[0], sides[1]) == float(sides[2])
 
 
-#if a^2 + b^2 = c^2, then (n)a^2 + (n)b^2 = (n)c^2 for n = 1,2,3...
-side_len = (3, 4, 5)
-for n in range(1, 100):
-    new_len = map(lambda x:n*x, side_len)
-    print("trying: ", new_len, n)
-    print("sum: ", sum(new_len))
-    if is_pyth(new_len) and (sum(new_len) == 1000):
-        print("Fount it!!!", new_len)
-        break
+
+# not found :(
+# I need to generate all triplets, using a modified version of Euclid's
+# formula for primitive triplets (add the k multiple in).
+
+# first need test for if numbers are coprime
+
+def gcd(a, b):
+    return a if b == 0 else gcd(b, a % b)
+
+def coprime(a, b):
+	return gcd(a, b) == 1
+
+print(coprime(4,10))
+
+# where m greater n, m minus n odd, and with m and n coprime.
+# a = k(m^2 - n^2)
+# b = k(2mn)
+# c = k(m^2 + n^2)
