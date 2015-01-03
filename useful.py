@@ -30,3 +30,13 @@ def is_prime(N):
         if (N%n == 0):
             return False
     return True
+
+# file handling
+def read_file_to_string(filename)
+	str_num = ''
+	with open(filename, 'r') as f:
+	    for line in f:
+	        str_num += line
+	    str_num = "".join(str_num.split('\n'))
+	f.closed
+    return str_num
