@@ -12,23 +12,12 @@ from math import hypot
 def is_pyth(sides):
     return hypot(sides[0], sides[1]) == float(sides[2])
 
-
-
-# not found :(
-# I need to generate all triplets, using a modified version of Euclid's
-# formula for primitive triplets (add the k multiple in).
-
-# first need test for if numbers are coprime
-
-def gcd(a, b):
-    return a if b == 0 else gcd(b, a % b)
-
-def coprime(a, b):
-	return gcd(a, b) == 1
-
-print(coprime(4,10))
-
-# where m greater n, m minus n odd, and with m and n coprime.
-# a = k(m^2 - n^2)
-# b = k(2mn)
-# c = k(m^2 + n^2)
+# Formula obtained by solving for c using 2 provided equations
+for b in count(1):
+    c = (pow(1000, 2) - 2000.0*b + 2.0*pow(b, 2))/(2000.0 - 2.0*b)
+    if c.is_integer():
+        a = 1000 - b - c
+        print("(a, b, c):", (a, b, c))
+        print("Pythagorean test:", is_pyth((a, b, c)))
+        print("Product: ", a*b*c)
+        break
