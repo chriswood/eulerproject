@@ -1,0 +1,30 @@
+def is_pyth(sides):
+	'''
+	Tests for a 3-4-5 right triangle (Pythagorean triplet)
+	'''
+    return hypot(sides[0], sides[1]) == float(sides[2])
+
+def gcd(a, b):
+    return a if b == 0 else gcd(b, a % b)
+
+def coprime(a, b):
+    return gcd(a, b) == 1
+
+def is_prime(N):
+    '''
+    Check a number N and see if it is divisible by anything less than
+    it's square root evenly.
+    '''
+    # check predefined values
+    if N in (1, 4):
+        return False
+    if N in (2, 3):
+        return True
+
+    #get last value to test for even division into N
+    last_value = math.ceil(math.sqrt(N))
+
+    for n in xrange(2, int(last_value) + 1):
+        if (N%n == 0):
+            return False
+    return True
