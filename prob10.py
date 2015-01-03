@@ -1,16 +1,8 @@
-from math import hypot, sqrt, ceil
+# The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 
-def is_pyth(sides):
-	'''
-	Tests for a 3-4-5 right triangle (Pythagorean triplet)
-	'''
-    return hypot(sides[0], sides[1]) == float(sides[2])
+# Find the sum of all the primes below two million.
 
-def gcd(a, b):
-    return a if b == 0 else gcd(b, a % b)
-
-def coprime(a, b):
-    return gcd(a, b) == 1
+from math import sqrt, ceil
 
 def is_prime(N):
     '''
@@ -24,9 +16,16 @@ def is_prime(N):
         return True
 
     #get last value to test for even division into N
-    last_value = ceil(math.sqrt(N))
+    last_value = ceil(sqrt(N))
 
     for n in xrange(2, int(last_value) + 1):
         if (N%n == 0):
             return False
     return True
+
+total = 2 # skip 2 so the range step comes out right
+for i in xrange(3, 2000000, 2):
+    if is_prime(i):
+		print("Prime: ", i)
+		total += i
+print("Total: ", total)
