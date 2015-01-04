@@ -35,7 +35,9 @@ class GridSearch:
 
     def compare(self, sset):
         p = self.product(sset)
-        self.lproduct = p if p > self.lproduct else self.lproduct
+        if p > self.lproduct:
+            self.lproduct = p 
+            self.highest_set = sset
 
     def search_down(self, x, y):
         if (y + self.search_size) > self.y_range:
@@ -43,11 +45,33 @@ class GridSearch:
         sset = []
         for n in range(y, y + self.search_size):
             sset.append(self.grid[n][x])
-        print(sset)
         self.compare(sset)
 
-    def search_diag(self, x, y):
-        pass
+    def search_right(self, x, y):
+        if (x + self.search_size) > self.x_range:
+            return
+        sset = []
+        for n in range(x, x + self.search_size):
+            sset.append(self.grid[y][n])
+        self.compare(sset)
+
+    def search_diag_right(self, x, y):
+        if (x + self.search_size) > self.x_range or \
+           (y + self.search_size) > self.y_range:
+            return
+        sset = []
+        for i in range(search.search_size):
+            sset.append(self.grid[y + i][x + i])
+        self.compare(sset)    
+
+    def search_diag_left(self, x, y):
+        if (x - self.search_size) < 0 or \
+           (y + self.search_size) > self.y_range:
+            return
+        sset = []
+        for i in range(search.search_size):
+            sset.append(self.grid[y + i][x - i])
+        self.compare(sset)
 
 # range 0, 19 end with 16
 search = GridSearch('data11.txt', 4)
@@ -55,5 +79,11 @@ search.gprint()
 for y in range(search.y_range):
     for x in range(search.x_range):
         search.search_down(x, y)
+        search.search_right(x, y)
+        search.search_diag_right(x, y)
+        search.search_diag_left(x, y)
+
+print("Highest total is: ", search.lproduct)
+print("set is: ", search.highest_set)
     
 
