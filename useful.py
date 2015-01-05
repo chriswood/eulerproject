@@ -1,9 +1,9 @@
 from math import hypot, sqrt, ceil
 
 def is_pyth(sides):
-	'''
-	Tests for a 3-4-5 right triangle (Pythagorean triplet)
-	'''
+    '''
+    Tests for a 3-4-5 right triangle (Pythagorean triplet)
+    '''
     return hypot(sides[0], sides[1]) == float(sides[2])
 
 def gcd(a, b):
@@ -24,7 +24,7 @@ def is_prime(N):
         return True
 
     #get last value to test for even division into N
-    last_value = ceil(math.sqrt(N))
+    last_value = ceil(sqrt(N))
 
     for n in xrange(2, int(last_value) + 1):
         if (N%n == 0):
@@ -32,11 +32,11 @@ def is_prime(N):
     return True
 
 # file handling
-def read_file_to_string(filename)
-	str_num = ''
-	with open(filename, 'r') as f:
+def read_file_to_string(filename):
+    str_num = ''
+    with open(filename, 'r') as f:
 	    for line in f:
 	        str_num += line
 	    str_num = "".join(str_num.split('\n'))
-	f.closed
+    f.closed
     return str_num
