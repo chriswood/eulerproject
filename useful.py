@@ -40,3 +40,10 @@ def read_file_to_string(filename):
 	    str_num = "".join(str_num.split('\n'))
     f.closed
     return str_num
+
+def product(l):
+    '''Multiply numbers in a list'''
+    p = 1
+    for el in l:
+        p *= el
+    return p

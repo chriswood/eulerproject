@@ -30,20 +30,23 @@ def prime_factors(num):
             #stop loop from continuing upon recursion
             break 
 
-number = 27
+def product(l):
+    p = 1
+    for el in l:
+        p *= el
+    return p
 
 tnum = 0
-for n in range(1,8):
+for n in count(1):
     plist = []
-    tnum += n #new make triange :)
+    tnum += n #new make triangle :)
     print "The %ith triangle number is: " %n, tnum
     prime_factors(tnum) #stored in plist
-    print(plist)
-
-
-#('The 3905th triangle number is: ', 7626465)
-#('Divisors: ', 96)
-#('The 3906th triangle number is: ', 7630371)
-#('Divisors: ', 24)
-#('The 3907th triangle number is: ', 7634278)
+    # Count number of occurences of each factor and add 1
+    product_list = map(lambda x:x+1, Counter(plist).values())
+    divs = product(product_list)
+    print("Divisors: ", divs)
+    if divs > 500:
+        print("Found! : ", n)
+        break
 
