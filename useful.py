@@ -41,6 +41,13 @@ def read_file_to_string(filename):
     f.closed
     return str_num
 
+def read_file_to_list(filename):
+    l = []
+    with open(filename, 'r') as f:
+	    for line in f:
+	        l.append(long(line.strip('\n')))
+    return l
+
 def product(l):
     '''Multiply numbers in a list'''
     p = 1
