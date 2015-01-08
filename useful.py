@@ -1,4 +1,4 @@
-from math import hypot, sqrt, ceil
+from math import hypot, sqrt, ceil, factorial
 
 def is_pyth(sides):
     '''
@@ -47,3 +47,8 @@ def product(l):
     for el in l:
         p *= el
     return p
+
+def choose(a,b):
+    '''implement choose notation'''
+    return (factorial(a)/(factorial(b) * factorial(a - b)))
+
