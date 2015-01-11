@@ -16,12 +16,6 @@ class Tree:
         self.high_cost = 0
         self.high_path = ''
 
-    def visit(self, node):
-        node.visit()
-
-    def bottom(self, level):
-        return(level == (len(data) - 1))
-
     def traverse(self, path):
         print("Path: ", path)
         clevel = 0
