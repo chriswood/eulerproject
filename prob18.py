@@ -1,13 +1,13 @@
 #python3.4
 
-class Queue:
+class Stack:
     def __init__(self):
         self.items = []
 
-    def enqueue(self, item):
+    def push(self, item):
         self.items.append(item)
 
-    def dequeue(self):
+    def spop(self):
         return self.items.pop()
 
     def show(self):
@@ -24,22 +24,27 @@ class Tree:
         self.tree = data
 
     def visit(self, node):
-        print("noode", node.value, sep=' ')
+        node.visit()
 
+    def bottom(self, level):
+        return(level == (len(data) - 1))
 
 class Node:
     def __init__(self, nodedata): #(level, pos)
         self.level = nodedata[0]
         self.pos = nodedata[1]
         self.value = tree.tree[self.level][self.pos]
-        try:
-            self.l_value = tree.tree[self.level + 1][self.pos]
-            self.r_value = tree.tree[self.level + 1][self.pos + 1]
-            self.l = Node((self.level + 1, self.pos))
-            self.r = Node((self.level + 1, self.pos + 1))
-        except(IndexError):
+        self.visited = False
+        if not tree.bottom(self.level):
+            self.l = (self.level + 1, self.pos)
+            self.r = (self.level + 1, self.pos + 1)
+        else:
             self.l = None
             self.r = None
+
+    def visit(self):
+        self.visited = True
+
 #   3
 #  7 4
 # 2 4 6
@@ -48,15 +53,35 @@ class Node:
 data = [[3], [7, 4], [2, 4, 6], [8, 5, 9, 3]]
 tree = Tree(data)
 root = Node((0, 0))
-q = Queue()
-q.enqueue(root)
-while not q.is_empty():
-    q.show()
-    node = q.dequeue()
+tree.visit(root)
+s = Stack()
+s.push(Node(root.l))
+s.push(Node(root.r))
+while not s.is_empty():
+    node = s.spop()
+    print(node.value)
     if node.l:
-        q.enqueue(node.l)
+        lnode = Node(node.l)
+        if not lnode.visited:
+            tree.visit(lnode)
+            s.push(lnode)
     if node.r:
-        q.enqueue(node.r)
+        rnode = Node(node.r)
+        if not rnode.visited:
+            tree.visit(rnode)
+            s.push(rnode)
+
+
+#iterative DFS(Vertex v)
+#    mark v visited
+#    make an empty Stack S
+#    push all vertices adjacent to v onto S
+#    while S is not empty do
+#        Vertex w is pop off S
+#        for all Vertex u adjacent to w do
+#            if u is not visited then
+#                mark u visited
+#                push u onto S
 
 
 

@@ -59,3 +59,4 @@ def choose(a,b):
     '''implement choose notation'''
     return (factorial(a)/(factorial(b) * factorial(a - b)))
 
+
