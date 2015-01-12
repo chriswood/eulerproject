@@ -1,4 +1,3 @@
-// my second program in C++
 #include <iostream>
 #include <math.h>
 
