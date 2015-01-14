@@ -13,7 +13,7 @@ def termGenerator():
         yield i
 
 def fib(n):
-    return n if n in [1, 2] else fib(n-1) + fib(n-2)
+    return 1 if n in [1, 2] else fib(n-1) + fib(n-2)
 
 sum = 0
 termGenObj = termGenerator()
