@@ -13,14 +13,19 @@ from decimal import Decimal, getcontext, setcontext, Context
 
 class DecSearch:
     """Handle searching a floating point number for repeating patterns."""
-    def __init__(self, limit, search_string):
+    def __init__(self, number, limit, log, mn, mp, md):
         """limit is length of number to search.
-           chunk is how much to break the search up by.
-           e.g. chunk 3 means search the string in chunks of thirds
+           number is the decimal to check
         """
-        setcontext(Context(prec=100))
+        setcontext(Context(prec=limit + 1))
         self.limit = limit
-        self.s = search_string
+        self.number = number
+        self.s = str(Decimal(1)/Decimal(number))[2:]
+        self.whole = len(self.s) < self.limit
+        self.log = log
+        self.max_number = mn
+        self.max_period = mp
+        self.max_digits = md
 
     def unit(self, j):
         return (Decimal(1)/Decimal(j))
@@ -35,23 +40,40 @@ class DecSearch:
     def run(self, interval):
         for i in range(0, self.limit, interval):
             if i + 2 * interval > self.limit:
-                print("no match found.")
                 break
             a, b, c = i, i + interval, i + interval + interval
-            self.interval_log(a, b, c)
-            if self.s[a:b] == self.s[b:c]:
-                print("found match")
+            #self.interval_log(a, b, c)
+            if self.s[a:b] == self.s[b:c] and self.make_sure(c, interval):
                 self.match_log(a, b, c)
-                break
+                self.log.append({'number': self.number,
+                                 'period': interval,
+                                 'digits': self.s[a:b]})
+                return True
+        return False
 
-    def make_sure(self):
+    def make_sure(self, c, interval):
         """Check several more times for match"""
-        pass
+        for i in range(c, 3*interval, interval):
+            if not self.s[i:i + interval] == self.s[i + interval:i + 2 * interval]:
+                print(self.s[i:i + interval])
+                print("***")
+                print(self.s[i + interval:i + 2 * interval])
+                import sys
+                sys.exit(1)
+        return True
 
-test = '7862459287364978692435'
-print("test string is {0}.".format(test))
-print("Length: {0}".format(len(test)))
-search = DecSearch(10, test)
-search.run(2)
-
-#search(3)
+test = 7
+log = []
+limit = 100000
+chunk_limit = 10000
+mn = 0
+mp = 0
+md = ''
+for x in range(1, 1001):
+    search = DecSearch(x, limit, log, mn, mp, md)
+    if not search.whole:
+        count = 5
+        while not search.run(count) and count <= chunk_limit:
+            count += 1
+    else:
+        log.append({'number': x, 'period': 0})
