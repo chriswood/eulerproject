@@ -44,7 +44,7 @@ class DecSearch:
             a, b, c = i, i + interval, i + interval + interval
             #self.interval_log(a, b, c)
             if self.s[a:b] == self.s[b:c] and self.make_sure(c, interval):
-                self.match_log(a, b, c)
+                #self.match_log(a, b, c)
                 self.log.append({'number': self.number,
                                  'period': interval,
                                  'digits': self.s[a:b]})
