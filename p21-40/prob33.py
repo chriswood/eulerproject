@@ -40,7 +40,7 @@ for i in range(10, 100):
     for j in range(10, 100):
         if i != j and check(i, j):
             process(i, j)
-print(found)
+
 a = 1
 b = 1
 for n in found:

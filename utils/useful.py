@@ -103,4 +103,8 @@ class Tree:
             self.high_cost = cost
             self.high_path = path
 
-
+import collections
+def rotate(n):
+    d = collections.deque([c for c in str(n)])
+    d.rotate(1)
+    return int(''.join(d))
