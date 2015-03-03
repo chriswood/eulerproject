@@ -108,3 +108,11 @@ def rotate(n):
     d = collections.deque([c for c in str(n)])
     d.rotate(1)
     return int(''.join(d))
+
+def is_pandigital(n):
+    """ can't start with 0 """
+    n = str(n)
+    return all(['0' not in n, len(n) == 9, len(set(n)) == 9])
+
+def ccat(x, y, z):
+    return ''.join([str(i) for i in [x,y,z]])
