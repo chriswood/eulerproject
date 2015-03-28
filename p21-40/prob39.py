@@ -10,7 +10,6 @@ from math import sqrt
 from time import time
 
 t = time()
-p = 120
 # a+b+c=p
 max_p = 0
 max_s = 0
@@ -24,7 +23,6 @@ for p in range(3, 1001):
     if solutions > max_s:
         max_p = p
         max_s = solutions
-        print("p={0} has {1} solutions.".format(p, solutions))
 
 print("********************")
 print("max p is {0} with {1} solutions.".format(max_p, max_s))
