@@ -114,5 +114,15 @@ def is_pandigital(n):
     n = str(n)
     return all(['0' not in n, len(n) == 9, len(set(n)) == 9])
 
+def gen_is_pandigital(n, r):
+    """ Generalized version of pandigital function.
+        Still can't start with 0 """
+    n = str(n)
+
+    compa = "".join([str(i) for i in range(r)])
+    compb = "".join(sorted(n))
+
+    return compa == compb
+
 def ccat(x, y, z):
     return ''.join([str(i) for i in [x,y,z]])
