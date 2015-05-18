@@ -1,4 +1,4 @@
-
+from itertools import dropwhile
 
 def read_hands(filename):
     with open(filename, 'r') as f:
@@ -6,7 +6,7 @@ def read_hands(filename):
             print(hand)
 
 # read_hands('../data/p054_poker.txt')
-test = 'AS TS QS JS KS 7C 8C 5C QD 6C'
+test = '8S TS QS 9S JS 7C 8C 5C QD 6C'
 
 class Hand:
     def __init__(self, cards):
@@ -33,14 +33,27 @@ class Hand:
             sorted(set(''.join([x[0] for x in self.p1]))) == match)
 
     def sf(self):
-        return False
+        return self.is_straight(self.p1) and self.is_flush(self.p1)
 
     def fk(self):
         return True
 
-    def is_flush(self, suits):
-        # takes string of suits
-        return True
+    def is_flush(self, cards):
+        return len([x for x in cards if x[1] == cards[0][1]]) == len(cards)
+
+    def is_straight(self, cards):
+        start = self.lowest_card(cards)
+        match = sorted(set(self.order[start:start + 5]))
+        print(sorted(set([x[0] for x in cards])))
+        return match == sorted(set([x[0] for x in cards]))
+
+    def lowest_card(self, cards):
+        lowest = self.order.index(cards[0][0])
+        for card in cards:
+            pos = self.order.index(card[0])
+            if pos < lowest:
+                lowest = pos
+        return lowest
 
 hand = Hand(test)
 hand.display()
