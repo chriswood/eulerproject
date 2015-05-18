@@ -6,21 +6,17 @@ def read_hands(filename):
             print(hand)
 
 # read_hands('../data/p054_poker.txt')
-test = '8S JC 7S 9H TD 7C 8C 5C QD 6C'
+test = '8S AS TD 3C JD 7C 7D 5C QD 7H'
 
 class Hand:
     def __init__(self, cards):
-        self.p1 = cards.split()[:5]
-        self.p2 = cards.split()[5:]
-        self.classes = ['rf', 'sf', 'fk', 'fh', 'fl', 'st']
+        self.p1 = cards.split()
+        self.classes = ['rf', 'sf', 'fk', 'fh', 'fl', 'st', 'tk', 'tp', 'op', 'hk']
         self.order = '23456789TJQKA'
         self.key1_card = None
 
     def display(self):
         print(self.p1)
-
-    def sort_hand(self):
-        pass
 
     def classify(self):
         for fname in self.classes:
@@ -55,6 +51,24 @@ class Hand:
             return True
         return False
 
+    def tk(self):
+        return self.is_pair(self.p1, pair_count = 3)
+
+    def tp(self):
+        groups = Counter(x[0] for x in self.p1)
+        res = groups.most_common()
+        if res[0][1] == 2 and res[1][1] == 2:
+            self.key1_card = (res[0][0], res[1][0])
+            return True
+        return False
+
+    def op(self):
+        return self.is_pair(self.p1, pair_count = 2)
+
+    def hk(self):
+        self.key1_card = self.high_card(self.p1)
+        return True
+
     def high_card(self, cards):
         return max(cards, key=lambda x: self.order.index(x[0]))
 
@@ -87,20 +101,26 @@ class Hand:
                 lowest = pos
         return lowest
 
+def tie_breaker(h1, h2, t1, t2):
+    return 1
 
+# Classify hand 1
+hand1 = Hand(test[:14])
+hand1.display()
+hand1_type = hand1.classify()
+print("Hand 1 is a {0}.".format(hand1_type))
 
-hand = Hand(test)
-hand.display()
-hand_type = hand.classify()
-print(hand_type)
+hand2 = Hand(test[14:])
+hand2.display()
+hand2_type = hand2.classify()
+print("Hand 2 is a {0}.".format(hand2_type))
 
-    # High Card: Highest value card.
-    # One Pair: Two cards of the same value.
-    # Two Pairs: Two different pairs.
-    # Three of a Kind: Three cards of the same value.
-    # Straight: All cards are consecutive values.
-    # Flush: All cards of the same suit.
-    # Full House: Three of a kind and a pair.
-    # Four of a Kind: Four cards of the same value.
-    # Straight Flush: All cards are consecutive values of same suit.
-    # Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
+if hand1_type == hand2_type:
+    winner = tie_breaker(hand1, hand2, hand1_type, hand2_type)
+else:
+    if hand1.classes.index(hand1_type) < hand2.classes.index(hand2_type):
+        winner = 1
+    else:
+        winner = 2
+
+print("The winner is hand {0}".format(winner))
