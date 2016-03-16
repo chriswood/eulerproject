@@ -1,12 +1,5 @@
 from collections import Counter
-
-def read_hands(filename):
-    with open(filename, 'r') as f:
-        for hand in f:
-            print(hand)
-
-# read_hands('../data/p054_poker.txt')
-test = '8S AS TD 3C JD 7C 7D 5C QD 7H'
+import sys
 
 class Hand:
     def __init__(self, cards):
@@ -30,7 +23,10 @@ class Hand:
             sorted(set(''.join([x[0] for x in self.p1]))) == match)
 
     def sf(self):
-        return self.is_straight(self.p1) and self.is_flush(self.p1)
+        if self.is_straight(self.p1) and self.is_flush(self.p1):
+            self.key1_card = self.high_card(self.p1)
+            return True
+        return False
 
     def fk(self):
         return self.is_pair(self.p1, 4)
@@ -47,7 +43,6 @@ class Hand:
     def st(self):
         if self.is_straight(self.p1):
             self.key1_card = self.high_card(self.p1)
-            print(self.key1_card)
             return True
         return False
 
@@ -78,7 +73,7 @@ class Hand:
         res = groups.most_common()
         if fh_check:
             if len(res) == 2 and res[0][1] == 3:
-                self.key1_card = (res[0][0], res[1][0])
+                self.key1_card = res[0][0]
                 return True
         elif res[0][1] == pair_count:
             self.key1_card = res[0][0]
@@ -101,26 +96,73 @@ class Hand:
                 lowest = pos
         return lowest
 
-def tie_breaker(h1, h2, t1, t2):
-    return 1
 
-# Classify hand 1
-hand1 = Hand(test[:14])
-hand1.display()
-hand1_type = hand1.classify()
-print("Hand 1 is a {0}.".format(hand1_type))
+def tie_breaker(h1, h2, hand_type):
+    if hand_type in ['sf', 'fk', 'fh', 'st', 'tk']:
+        # just compare one key card
+        return 1 if h1.order.index(h1.key1_card[0]) > \
+                    h2.order.index(h2.key1_card[0]) else 2
+    elif hand_type in ['fl', 'hk']:
+        #run  down list
+        cards1 = h1.p1
+        cards2 = h2.p1
+        key1 = h1.high_card(cards1)
+        key2 = h2.high_card(cards2)
+        while h1.order.index(key1[0]) == h2.order.index(key2[0]):
+            cards1.remove(max(cards1, key=lambda x: h1.order.index(x[0])))
+            cards2.remove(max(cards2, key=lambda x: h2.order.index(x[0])))
+            key1 = h1.high_card(cards1)
+            key2 = h2.high_card(cards2)
+        return 1 if h1.order.index(key1[0]) > h2.order.index(key2[0]) else 2
+    else: #tp, op
+        key1 = h1.key1_card
+        key2 = h2.key1_card
+        print("key1 = {0}, key2 = {1}".format(key1, key2))
+        if hand_type == 'op':
+            if h1.order.index(key1[0]) == h2.order.index(key2[0]):
+                cards1 = list(filter(lambda x: x[0] != key1[0], h1.p1))
+                cards2 = list(filter(lambda x: x[0] != key1[0], h2.p1))
+                key1 = h1.high_card(cards1)
+                key2 = h2.high_card(cards2)
+                while h1.order.index(key1[0]) == h2.order.index(key2[0]):
+                    print("cards1 = {0}".format(cards1))
+                    cards1.remove(max(cards1, key=lambda x: h1.order.index(x[0])))
+                    cards2.remove(max(cards2, key=lambda x: h2.order.index(x[0])))
+                    key1 = h1.high_card(cards1)
+                    key2 = h2.high_card(cards2)
+                return 1 if h1.order.index(key1[0]) > h2.order.index(key2[0]) else 2
+            else:
+                return 1 if h1.order.index(key1[0]) > \
+                            h2.order.index(key2[0]) else 2
 
-hand2 = Hand(test[14:])
-hand2.display()
-hand2_type = hand2.classify()
-print("Hand 2 is a {0}.".format(hand2_type))
+def read_hands(filename):
+    wins = 0
+    with open(filename, 'r') as f:
+        for cardline in f:
+            winner = process(cardline)
+            if winner == 1:
+                wins += 1
+    print("Hand 1 won {0} times.".format(wins))
 
-if hand1_type == hand2_type:
-    winner = tie_breaker(hand1, hand2, hand1_type, hand2_type)
-else:
-    if hand1.classes.index(hand1_type) < hand2.classes.index(hand2_type):
-        winner = 1
+def process(cardline):
+    hand1 = Hand(cardline[:14])
+    hand1.display()
+    hand1_type = hand1.classify()
+
+    hand2 = Hand(cardline[14:])
+    hand2.display()
+    hand2_type = hand2.classify()
+
+    if hand1_type == hand2_type:
+        winner = tie_breaker(hand1, hand2, hand1_type)
     else:
-        winner = 2
+        if hand1.classes.index(hand1_type) < hand2.classes.index(hand2_type):
+            winner = 1
+        else:
+            winner = 2
 
-print("The winner is hand {0}".format(winner))
+    print("The winner is hand {0}".format(winner))
+    return winner
+
+read_hands('../data/p054_poker.txt')
+#test = '8S AS TD 3C JD 7C 7D 5C QD 7H'
