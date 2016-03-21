@@ -8,12 +8,13 @@
 
 # First find sample problem
 import sys
+import math
 
 def pentagonal(start=1):
     #p(27)=1080 gives first non-zero padding 4 digit
     n = start
     while True:
-        yield n * (3*n - 1)/2
+        yield int(n * (3*n - 1)/2)
         n += 1
 
 def get_range(n):
@@ -34,6 +35,7 @@ class Figurate:
                           'hept_set', 'oct_set']
         self.membership = {'tri_set': False, 'square_set': False, 'hex_set': False,
                            'hept_set': False, 'oct_set': False}
+        self.candidates = []
 
     def _build_square_set(self):
         n = 32
@@ -82,41 +84,41 @@ class Figurate:
         self._build_heptagonal_set()
         self._build_octagonal_set()
 
-    def display(self):
-        print(self.membership)
+    def get_open_sets(self):
+        return {k for k, v in self.membership.items() if not v}
 
-    def clear_membership(self):
-        for key in self.membership:
-            self.membership[key] = False
+    def check_range(self, n, sets=None):
+        self.candidates.append(n)
+        last_two = int(n%100)
+        if last_two > 9:
+            test_range = get_range(last_two)
+            for i in range(test_range[0], test_range[1]):
+                open_sets = sets if sets else self.set_names
+                for s in open_sets:
+                    result = i in getattr(self, s)
+                    if result:
+                        new_set_list = open_sets.copy()
+                        new_set_list.remove(s)
+                        if len(new_set_list) == 0:
+                            if int(i%100) == math.floor(p/100):
+                                self.candidates.append(i)
+                                print("WINNNNNER", self.candidates)
+                                print("sum is", sum(self.candidates))
+                                sys.exit()
+                            else:
+                                continue
+                        if not self.check_range(i, new_set_list):
+                            continue
+                        else:
+                            return True
+        self.candidates.remove(n)
+        return False
 
 my_f = Figurate()
 my_f.build_data()
 
 p_sieve = pentagonal(start=27)
 p = next(p_sieve)
-while p < 1081: #1080
-    tri_member = False
-    square_member = False
-    last_two = int(p%100) #80
-    if(last_two > 9):
-        test_range = get_range(last_two)
-        #check every set for this range
-        for i in range(test_range[0], test_range[1]):
-            my_f.clear_membership()
-            for shape in my_f.set_names:
-                shape_set = getattr(my_f, shape)
-                test = i in shape_set
-                my_f.membership[shape] = test
-                # if test:
-                #     print("found something!!!!!!!!!")
-                #     print("p = %d, i = %d" % (p, i))
-                #     sys.exit()
-            print("p = %d, i = %d" % (p, i))
-            my_f.display()
-            my_f.clear_membership()
-
-
-        # 1080 -> search other sets for something starting with 80. If found, check that
-        # box and go search for the next thing. Otherwise, return
-        #8010,8011,8012,... check for triangle or square
+while p < 10000:
+    my_f.check_range(p)
     p = next(p_sieve)
