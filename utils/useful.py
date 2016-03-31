@@ -126,3 +126,7 @@ def gen_is_pandigital(n, r):
 
 def ccat(x, y, z):
     return ''.join([str(i) for i in [x,y,z]])
+
+def perfect_square(n):
+    a = round(sqrt(n))
+    return pow(a, 2) == n
