@@ -1,4 +1,5 @@
 from itertools import cycle
+from fractions import Fraction
 
 def k_sieve():
     yield 2
@@ -18,14 +19,16 @@ def cf(k, terms):
     '''if we are n(terms) levels deep, then return 1/k(n+1) + k(n):
        else return k(n) + 1/cf(k(n+1)'''
     print("called with k,terms=", k,terms)
+
     if terms == 1:
         return k
     elif terms == 2:
-        return k + (1/next(k_terms))
+        return k + Fraction(1, next(k_terms))
     else:
-        return k + 1/(cf(next(k_terms), terms - 1))
+        return k + Fraction(1, (cf(next(k_terms), terms - 1)))
 
-term_num = 5
+term_num = 100
 k_terms = k_sieve()
-e = cf(next(k_terms), term_num)
+e = cf(Fraction(next(k_terms)), term_num)
 print("For", term_num, "terms, e is approximately: ", e)
+print("Sum of numerator is",sum(map(int, str(e.numerator))))
