@@ -23,10 +23,11 @@ def simple_cf(n):
 
         root = Decimal(1)/(root - a0)
 
-
+t = []
 limit = 10000
 total = 0
-for n in range(1, limit + 1):
+#for n in range(1, limit + 1):
+for n in [487]:
     if perfect_square(n):
         print("{0} is a perfect square".format(n))
         continue
@@ -37,13 +38,13 @@ for n in range(1, limit + 1):
 
     while int(term) is not end:
         term = next(period)
+        t.append(term)
         p_len += 1
     print("{0}: {1}".format(n, p_len))
     if p_len % 2 == 1:
         total += 1
-    if p_len > 300:
-        print("WHOOOOOOOOOOOOOOOOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        sys.exit()
+
+print(t)
 
 print("_______________________")
 print("total is", total)
