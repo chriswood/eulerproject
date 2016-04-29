@@ -130,3 +130,8 @@ def ccat(x, y, z):
 def perfect_square(n):
     a = round(sqrt(n))
     return pow(a, 2) == n
+
+def grouper(iterable, n):
+    args = [iter(iterable)] * n
+    print(list(args[0]))
+    return zip(*args)
