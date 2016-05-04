@@ -135,3 +135,6 @@ def grouper(iterable, n):
     args = [iter(iterable)] * n
     print(list(args[0]))
     return zip(*args)
+
+'''
+sieve = filter(is_prime, range(11, limit))

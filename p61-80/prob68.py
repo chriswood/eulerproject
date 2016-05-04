@@ -25,12 +25,7 @@ def test(s):
     return True
 
 def arrange(s):
-    #return s[:4] + s[2] + s[4] + s[5] + s[4] + s[1]
-    #abc,dce,feg,hgi,jib
-    # 12345678910
-    # 123,435,657,879,1092
     return s[:4] + [s[2], s[4], s[5], s[4], s[6], s[7], s[6], s[8], s[9], s[8], s[1]]
-
 
 
 t1 = time()
