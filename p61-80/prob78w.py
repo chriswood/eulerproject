@@ -5,10 +5,8 @@ def main():
     if len(sys.argv) <= 1:
         print("yer fergittin something")
     n = int(sys.argv[1])
-    end  = math.ceil(n/2)
-
-    #for i in range(n, end, -1):
-    result = partition(n)
+    k = int(sys.argv[2])
+    result = P(k, n)
     print('P({0}) = {1}'.format(n, result))
     
 # for , we need p(2) + our new 111
@@ -20,12 +18,17 @@ def partition(n):
     result = partition(n - 1) + 1 + find_odds(n)
     return(result)
 
-# given n, find any groupings that are not included in the P(n-1), 1 grouping
-# todo generalize to P(n-1), step
-def find_odds(n):
-    return 0
+# return the number of ways n can be summed in k non-zero terms, λ ⊢ n
+# e.g. P(3,5) = 1 + 1 + 3 = 5, 2 + 2 + 1 = 5, = 2, 4+1+0, 3+2+0, 5+0+0
+def P(k, n):
+    if(k > n):
+        return 0
+    if(k == n):
+        return 1
+    return P(k+1, n) + P(k, n - k)
 
-def factori
+
+
 
 if __name__ == "__main__":
     main()
